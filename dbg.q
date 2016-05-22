@@ -99,11 +99,14 @@ nexp:{senv[];s0[];{z;(4<fr 2)&(x<=fr 7)&not (x=fr 7)&fr[1]in y}[fr 7;value first
 / stack/state
 trace:{{$[(::)~v:x 3;x;v]}/[$[x~(::);0;x];fr]};
 prs:{$[s:fr 2;out[](("";"Exception: ",fr 4;"Breakpoint";"";"";"Running") s;"Top of the stack:"),pstk[10],("Current line: ",l 0;"Current exp: ",(l:txt fr)1);fr 4]}; / print state
-pstk:{reverse x sublist((" fr[",/:string[n],\:"]: "),'.Q.s1 each fr n:sTop-til sTop-7),1_ " Fn call, line: ",/:last each txt each {x 3}\[{not(::)~x 3};fr]}; / get N stack entries
+pstk:{reverse x sublist((" fr[",/:string[n],\:"]: "),'.Q.s1 each fr n:sTop-til sTop-7),1_ " Fn call(",/:string[`anon^fmap f[;6;0]],'"), line: ",/:last each txt each f:{x 3}\[{not(::)~x 3};fr]}; / get N stack entries
 ps:{out[]pstk $[x~(::);10;x]}; / print N stack entries
 pl:{out[]first txt trace x}; / print current line
 f:{out[]string trace[x][6;0]}; / print current function
 v:{(v[1]!-1_f 5),((v:value f[6;0])2)!1_(f:trace x)6};
+fmap:enlist[::]!enlist`;
+mfmap:{fmap::(!). flip raze{raze{$[99<type f:@[get;n:$[x~`;y;x:` sv `,x,y];0];enlist(f;n);99=type f;$[`~first key f;raze .z.s[x]each 1_key f;()];()]}[x]each key` sv`,x} each `,(key `)};
+
 / breakpoints
 bps:enlist[::]!enlist(); / map for fns
 cbps:`long$(); / curr bps
