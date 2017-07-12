@@ -45,6 +45,8 @@ tests:(
   {{[a;b;c;d;e;f] a,b,c,d,e,f}[;2;][3;;4][;1;5]6}; / check order
   {.[{x+y}] (1;2)}; / apps
   {(@[1 2 3;1;neg];@[1 2 3;1 2;neg];@[1 2 3;1;{x+1}];@[1 2 3;1 2;{x+1}])}; / @[x;y;z] except the catch block
+  {(@[(1 2;3 4);1;{prev x}]; @[1 2 3;1 1;{x+1}])};
+  {(@[(1 2;3 4);1;{y+prev x};10]; @[1 2 3;1 1;{x+y};10])};
   {.tst.v:.tst.v2:1 2 3;(@[.tst.v;1;neg];@[.tst.v2;1 2;neg];@[.tst.v;1;{x+1}];@[.tst.v2;1 2;{x+1}])};
   {(@[1 2 3;1;+;10];@[1 2 3;1 2;+;10];@[`a,1 2 3;1;+;10 20];@[1 2 3;1 2;+;10 20];@[1 2 3;1;{x+2*y};10];@[`a,1 2 3;1;{x+2*y};10 20];@[1 2 3;1 2;{x+2*y};10];@[1 2 3;1 2;{x+2*y};10 20])}; / @[x;y;z;w]
   {(.[1 2 3;();{x+10}];.[1 2 3;(),1;{x+10}];.[1 2 3;enlist 1 2;{x+10}];.[1 2 3;(),(::);{x+10}];@[{.[1 2 3;1;{x+10}]};1;::])}; / .[x;y;z] - depth 1/0
@@ -118,6 +120,7 @@ tstfn:{
 tests2:(
   {.d2.r[{x+1};1]=2}; / run works
   {.d2.r[{x+y};1 2]=3};
+  {.[.d2.r;({x};1 2);::]~"rank"};
   {10=.d2.r[{x[`a]:10;x};enlist `a`b!1 2]`a};
   {.d2.r[{x[`a]+y[`b]};([] a:1 2;b:2 3)]=4};
   {.d2.i[{x+1};1];.d2.cont[]=2}; / init + continue
@@ -125,11 +128,11 @@ tests2:(
   {.d2.ba[{x+1;x+2;x+3};2];if[not "Breakpoint"~first .d2.r[{x+1;x+2;x+3};1];:0b];if[not "Running"~first .d2.l[];:0b]; .d2.l[]=4}; / break + l
   {.d2.r[{1;ssr[1;2;3;4];1};1];if[not 7=.d2.fr 1;:0b];.d2.l[];if[not 7=.d2.fr 1;:0b];.d2.ef[];if[not 7=.d2.fr 1;:0b];.d2.nxt[];if[not 7=.d2.fr 1;:0b];.d2.nexp[];if[not 7=.d2.fr 1;:0b];.d2.cont[];if[not 7=.d2.fr 1;:0b];.d2.s[];if[not 7=.d2.fr 1;:0b];1b};
   {.d2.r[{1+neg 2;1+`a;1};1];if[not 7=.d2.fr 1;:0b];.d2.l[];if[not 7=.d2.fr 1;:0b];.d2.ef[];if[not 7=.d2.fr 1;:0b];.d2.nxt[];if[not 7=.d2.fr 1;:0b];.d2.nexp[];if[not 7=.d2.fr 1;:0b];.d2.cont[];if[not 7=.d2.fr 1;:0b];.d2.s[];if[not 7=.d2.fr 1;:0b];1b};
-  {.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.s[]];i=1578}; / s[]
-  {.d2.noDbg:0;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.s[]];i=1578};
+  {.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.s[]];i=1496}; / s[]
+  {.d2.noDbg:0;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.s[]];i=1496};
   {.d2.na:1;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.s[]];i=158};
   {.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.l[]];i=70};  / l[]
-  {.d2.noDbg:0;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.l[]];i=391};
+  {.d2.noDbg:0;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.l[]];i=369};
   {.d2.na:1;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.l[]];i=38};
   {.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.nexp[]];i=61}; / nexp[]
   {.d2.noDbg:0;.d2.i[tstfn;1];i:0;while[4<.d2.fr 2;i+:1;.d2.nexp[]];i=61};
