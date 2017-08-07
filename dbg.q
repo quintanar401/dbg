@@ -32,7 +32,7 @@ nargs:{k:value x;$[0=t:-100+type x;count k 1;t in 1 9;1;t in 2 3 10 11;2;t in 7 
 nargsp:{(0|1+nargs[x 0]-count x)+count empargs x}; / required num of args for parted fn
 empargs:{k:();j:-1;do[count x;k,:104=type(1;x j+:1)];where k}; / idx of missing args
 part:{$[9>k:count y;x . y;(value "{[x;y]x[",(";"sv @["y ",/:string til k;z;:;(count z)#enlist""]),"]}")[x;y]]}; / create parted fn
-tpart:{if[count b:(k:count j:empargs a:1_ g:value x)#y;a[j]:b];a:a,k _ y;$[104=type g 0;.z.s;app][g 0;a]}; / transform part fn into app form
+tpart:{if[count b:(k:count j:empargs g:value x)#y;g[j]:b];g:g,k _ y;$[104=type g 0;.z.s;app][g 0;1_g]}; / transform part fn into app form
 out:{(-1;::)[.z.w>0]};
 senv:{sT::.z.P;pc::0;if[fr 2;fr[2]:5]};
 
